@@ -1,0 +1,27 @@
+Package: TuNeS
+Title: Tumor Nest Selector - Spatial Analysis of Tumor Boundaries
+Version: 0.1.0
+Authors@R: person("TuNeS", "Developer", email = "tunes@example.com", role = c("aut", "cre"))
+Description: Interactive tools for selecting tumor regions in spatial transcriptomics data
+    and analyzing genomic separation at varying distances from tumor boundaries. Provides
+    a Shiny interface for drawing polygons and functions for calculating distance-based
+    metrics including transcriptomic distance, differential expression strength, and
+    cell type composition differences.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.0
+Imports:
+    shiny,
+    plotly,
+    sf,
+    dplyr,
+    ggplot2,
+    Seurat,
+    tidyr,
+    magrittr
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
