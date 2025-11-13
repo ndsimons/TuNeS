@@ -34,9 +34,18 @@ calculate_boundary_distances <- function(seurat_obj, polygons, fov_name = "fov")
 #' @return Numeric value (1 - correlation)
 #' @export
 calculate_transcriptomic_distance <- function(inside_cells, outside_cells, seurat_obj) {
-  inside_profile <- rowMeans(Seurat::GetAssayData(seurat_obj, slot = "data")[, inside_cells])
-  outside_profile <- rowMeans(Seurat::GetAssayData(seurat_obj, slot = "data")[, outside_cells])
+  # Get expression data
+  expr_data <- Seurat::GetAssayData(seurat_obj, slot = "data")
   
+  # Subset to cells of interest - force to matrix
+  inside_expr <- as.matrix(expr_data[, inside_cells, drop = FALSE])
+  outside_expr <- as.matrix(expr_data[, outside_cells, drop = FALSE])
+  
+  # Calculate mean profiles
+  inside_profile <- rowMeans(inside_expr)
+  outside_profile <- rowMeans(outside_expr)
+  
+  # Calculate distance as 1 - correlation
   dist <- 1 - cor(inside_profile, outside_profile)
   return(dist)
 }
