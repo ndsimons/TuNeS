@@ -18,11 +18,8 @@ TuNeS provides tools to interactively select tumor regions and analyze genomic s
 # Install devtools if needed
 install.packages("devtools")
 
-# Install TuNeS from local directory
-devtools::install_local("path/to/TuNeS")
-
-# Or from GitHub (if hosted)
-devtools::install_github("yourusername/TuNeS")
+# from GitHub
+devtools::install_github("ndsimons/TuNeS")
 ```
 
 ## Dependencies
@@ -228,15 +225,6 @@ TuNeS supports two modes for defining "inside" cells:
 - Ensure you extracted both `$profile` and `$celltype_contributions` from results
 - Check that inside_mode is correctly specified
 
-## Citation
-
-If you use TuNeS in your research, please cite:
-
-```
-TuNeS: Tumor Nest Selector for Spatial Transcriptomics Analysis
-[Your Name et al., Year]
-```
-
 ## License
 
 MIT License - see LICENSE file for details
@@ -244,9 +232,8 @@ MIT License - see LICENSE file for details
 ## Contact
 
 For questions, issues, or contributions:
-- GitHub Issues: [repository URL]
-- Email: [contact email]
+- GitHub Issues: https://github.com/ndsimons/TuNeS/issues
+- Email: noah.simons@providence.org
 
-## Acknowledgments
 
 TuNeS was developed for analyzing tumor microenvironment architecture in spatial transcriptomics data, with a focus on understanding immune-tumor boundaries and cell type spatial distributions.
