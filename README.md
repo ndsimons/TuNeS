@@ -1,10 +1,12 @@
 # TuNeS: Tumor Nest Selector
 
+<img align="right" src="https://github.com/user-attachments/assets/ab584c5a-2067-4506-971a-fc3f21d719f8" width="305" height="352">
+
 **Interactive spatial analysis of tumor boundaries in spatial transcriptomics data**
 
 TuNeS provides tools to interactively select tumor regions and analyze genomic separation at varying distances from tumor boundaries. This package is designed for spatial transcriptomics analysis, particularly for understanding tumor microenvironment architecture.
 
-## Features
+Features
 
 - **Interactive Polygon Selection**: Shiny app for drawing regions on spatial data
 - **Distance-Based Analysis**: Calculate genomic metrics at varying distances from boundaries
