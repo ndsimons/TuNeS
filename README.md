@@ -38,6 +38,7 @@ TuNeS requires the following packages:
 
 ## Quick Start
 
+If using shiny app to select polygons:
 ### 1. Launch Interactive Polygon Selector
 
 ```r
@@ -65,7 +66,21 @@ seurat_obj <- add_polygon_membership(seurat_obj, drawn_polygons)
 seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, drawn_polygons)
 ```
 
-### 3. Run Distance Profile Analysis
+If using DBscan to select polygons:
+### 3. Use DBscan to select and add polygons to Seurat Object
+
+```r
+seurat_obj <- add_dbscan_polygons(seurat_obj)
+# customize dbscan parameters:
+#seurat_obj <- add_dbscan_polygons(
+#  seurat_obj,
+#  eps = 35,
+#  minPts = 20,
+#  concavity = 2
+#)
+```
+
+### 4. Run Distance Profile Analysis
 
 ```r
 # Calculate all metrics at varying distances
@@ -74,7 +89,7 @@ results <- calculate_distance_profile(
   distance_thresholds = seq(10, 200, by = 10),
   metric = "all",
   group_by = "cellType",
-  inside_mode = "all"
+  inside_mode = "distance"
 )
 
 # Extract results
@@ -82,7 +97,7 @@ distance_profile <- results$profile
 celltype_contributions <- results$celltype_contributions
 ```
 
-### 4. Visualize Results
+### 5. Visualize Results
 
 ```r
 # Plot transcriptomic distance
@@ -98,7 +113,7 @@ plot_celltype_heatmap(celltype_contributions)
 plot_celltype_proportions(celltype_contributions, top_n = 5)
 ```
 
-### 5. Find Critical Distances
+### 6. Find Critical Distances
 
 ```r
 # Identify distances where separation is maximized
@@ -114,15 +129,21 @@ cat("Plateau begins at:", critical_dist$plateau_distance, "μm\n")
 library(TuNeS)
 library(Seurat)
 
-# Step 1: Select regions interactively
+# Skip step 1 if using DBscan for polygons
+# Step 1a: Select regions interactively
 launch_tunes()
 # ... draw polygons and save as 'tumor_regions' ...
 
-# Step 2: Process Seurat object
+# Step 1b: Process Seurat object
 seurat_obj <- add_polygon_membership(seurat_obj, tumor_regions)
+
+# Step 2: Generate DBscan polygons and add to seurat object
+seurat_obj <- add_dbscan_polygons(seurat_obj)
+
+# Step 3: Calculate signed boundary distances
 seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, tumor_regions)
 
-# Step 3: Analyze both modes
+# Step 4: Analyze both modes
 results_all <- calculate_distance_profile(
   seurat_obj = seurat_obj,
   distance_thresholds = seq(10, 200, by = 10),
@@ -155,6 +176,7 @@ plot_celltype_heatmap(results_all$celltype_contributions)
 - `launch_tunes()` - Launch Shiny app for polygon drawing
 
 ### Data Processing
+- `add_dbscan_polygons()` - Generate DBscan polygons and add to seurat object
 - `add_polygon_membership()` - Add inside/outside labels to Seurat object
 - `calculate_boundary_distances()` - Calculate signed distances to boundary
 
@@ -172,6 +194,7 @@ plot_celltype_heatmap(results_all$celltype_contributions)
 - `plot_all_metrics()` - Faceted view of all metrics
 - `plot_celltype_heatmap()` - Cell type contribution heatmap
 - `plot_celltype_proportions()` - Proportion trajectories
+- `plot_dbscan_polygons()` - Plot cell coordinates with dbscan polygons
 
 ## Understanding Inside Modes
 
@@ -192,7 +215,6 @@ TuNeS supports two modes for defining "inside" cells:
 ### Transcriptomic Distance
 - Range: 0 (identical) to 2 (opposite)
 - Higher values indicate greater gene expression differences
-- Typical tumor values: 0.1-0.5
 
 ### Composition Difference
 - Range: 0 (identical) to ~2 (completely different)
@@ -202,7 +224,6 @@ TuNeS supports two modes for defining "inside" cells:
 ### DE Strength
 - Mean |log2FC| of top 100 differentially expressed genes
 - Higher values indicate stronger transcriptional changes
-- Typical values: 0.5-2.0
 
 ## Tips and Best Practices
 
