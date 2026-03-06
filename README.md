@@ -63,6 +63,7 @@ launch_tunes()
 seurat_obj <- add_polygon_membership(seurat_obj, drawn_polygons)
 
 # Calculate boundary distances
+# if using interactive polygon selection, use drawn_polygons or whatever you name it
 seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, drawn_polygons)
 ```
 
@@ -71,6 +72,7 @@ If using DBscan to select polygons:
 
 ```r
 seurat_obj <- add_dbscan_polygons(seurat_obj)
+seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, dbscan_polygons)
 # customize dbscan parameters:
 # seurat_obj <- add_dbscan_polygons(
 #   seurat_obj,
@@ -130,17 +132,15 @@ library(TuNeS)
 library(Seurat)
 
 # Skip step 1 and proceed to step 2 if using DBscan for polygons
-# Step 1a: Select regions interactively
+# Step 1: Select regions interactively
 launch_tunes()
-
-# Step 1b: add polygons from interactive selection
-seurat_obj <- add_polygon_membership(seurat_obj, tumor_regions)
+seurat_obj <- add_polygon_membership(seurat_obj, drawn_polygons)
 
 # Step 2: Generate DBscan polygons and add to seurat object
 seurat_obj <- add_dbscan_polygons(seurat_obj)
 
 # Step 3: Calculate signed boundary distances
-seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, tumor_regions)
+seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, dbscan_polygons)
 
 # Step 4: Analyze both modes
 results_all <- calculate_distance_profile(
