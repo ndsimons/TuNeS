@@ -149,8 +149,8 @@ add_dbscan_polygons <- function(seurat_obj,
   
   # Add polygons to Seurat object FOV
   message("Adding polygons to Seurat object...")
-  seurat_obj@images[[fov_name]]@boundaries$cancer_regions <- auto_polygons
-  
+  #seurat_obj@images[[fov_name]]@boundaries$cancer_regions <- auto_polygons
+  seurat_obj <- add_polygon_membership(seurat_obj,auto_polygons)
   message(paste0("Successfully added ", n_clusters, " cancer region polygons"))
   
   return(seurat_obj)
