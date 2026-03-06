@@ -39,7 +39,7 @@ TuNeS requires the following packages:
 ## Quick Start
 
 If using shiny app to select polygons:
-### 1. Launch Interactive Polygon Selector
+### Launch Interactive Polygon Selector
 
 ```r
 library(TuNeS)
@@ -56,7 +56,7 @@ launch_tunes()
 # 6. Click "Extract Polygons"
 ```
 
-### 2. Add Polygon Information to Seurat Object
+### Add Polygon Information to Seurat Object
 
 ```r
 # Add inside/outside membership
@@ -67,7 +67,7 @@ seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, drawn_p
 ```
 
 If using DBscan to select polygons:
-### 3. Use DBscan to select and add polygons to Seurat Object
+### Use DBscan to select and add polygons to Seurat Object
 
 ```r
 seurat_obj <- add_dbscan_polygons(seurat_obj)
@@ -80,7 +80,7 @@ seurat_obj <- add_dbscan_polygons(seurat_obj)
 # )
 ```
 
-### 4. Run Distance Profile Analysis
+### Run Distance Profile Analysis
 
 ```r
 # Calculate all metrics at varying distances
@@ -97,7 +97,7 @@ distance_profile <- results$profile
 celltype_contributions <- results$celltype_contributions
 ```
 
-### 5. Visualize Results
+### Visualize Results
 
 ```r
 # Plot transcriptomic distance
@@ -113,7 +113,7 @@ plot_celltype_heatmap(celltype_contributions)
 plot_celltype_proportions(celltype_contributions, top_n = 5)
 ```
 
-### 6. Find Critical Distances
+### Find Critical Distances
 
 ```r
 # Identify distances where separation is maximized
@@ -129,12 +129,11 @@ cat("Plateau begins at:", critical_dist$plateau_distance, "μm\n")
 library(TuNeS)
 library(Seurat)
 
-# Skip step 1 if using DBscan for polygons
+# Skip step 1 and proceed to step 2 if using DBscan for polygons
 # Step 1a: Select regions interactively
 launch_tunes()
-# ... draw polygons and save as 'tumor_regions' ...
 
-# Step 1b: Process Seurat object
+# Step 1b: add polygons from interactive selection
 seurat_obj <- add_polygon_membership(seurat_obj, tumor_regions)
 
 # Step 2: Generate DBscan polygons and add to seurat object
@@ -160,7 +159,7 @@ results_distance <- calculate_distance_profile(
   inside_mode = "distance"
 )
 
-# Step 4: Combine and visualize
+# Step 5: Combine and visualize
 combined_results <- rbind(
   results_all$profile,
   results_distance$profile
