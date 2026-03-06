@@ -153,7 +153,10 @@ add_dbscan_polygons <- function(seurat_obj,
   seurat_obj <- add_polygon_membership(seurat_obj,auto_polygons)
   message(paste0("Successfully added ", n_clusters, " cancer region polygons"))
   
-  return(seurat_obj)
+  return(list(
+    seurat_obj = seurat_obj,
+    dbscan_polygons = auto_polygons
+  ))
 }
 
 #' Plot DBSCAN-based cancer region polygons
