@@ -35,6 +35,8 @@ TuNeS requires the following packages:
 - Seurat
 - tidyr
 - magrittr
+- dbscan
+- concaveman
 
 ## Quick Start
 
