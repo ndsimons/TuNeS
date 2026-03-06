@@ -72,12 +72,12 @@ If using DBscan to select polygons:
 ```r
 seurat_obj <- add_dbscan_polygons(seurat_obj)
 # customize dbscan parameters:
-#seurat_obj <- add_dbscan_polygons(
-#  seurat_obj,
-#  eps = 35,
-#  minPts = 20,
-#  concavity = 2
-#)
+# seurat_obj <- add_dbscan_polygons(
+#   seurat_obj,
+#   eps = 35,
+#   minPts = 20,
+#   concavity = 2
+# )
 ```
 
 ### 4. Run Distance Profile Analysis
