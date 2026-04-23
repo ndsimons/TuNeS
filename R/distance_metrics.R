@@ -34,8 +34,11 @@ calculate_boundary_distances <- function(seurat_obj, polygons, fov_name = "fov")
 #' @return Numeric value (1 - correlation)
 #' @export
 calculate_transcriptomic_distance <- function(inside_cells, outside_cells, seurat_obj) {
-  # Get expression data
-  expr_data <- Seurat::GetAssayData(seurat_obj, slot = "data")
+  # Prefer Seurat v5 layer API and fall back for older versions.
+  expr_data <- tryCatch(
+    Seurat::GetAssayData(seurat_obj, layer = "data"),
+    error = function(e) Seurat::GetAssayData(seurat_obj, slot = "data")
+  )
   
   # Subset to cells of interest - force to matrix
   inside_expr <- as.matrix(expr_data[, inside_cells, drop = FALSE])
@@ -46,7 +49,7 @@ calculate_transcriptomic_distance <- function(inside_cells, outside_cells, seura
   outside_profile <- rowMeans(outside_expr)
   
   # Calculate distance as 1 - correlation
-  dist <- 1 - cor(inside_profile, outside_profile)
+  dist <- 1 - stats::cor(inside_profile, outside_profile)
   return(dist)
 }
 
@@ -72,7 +75,7 @@ calculate_de_strength <- function(inside_cells, outside_cells, seurat_obj) {
                                    verbose = FALSE)
   
   if (nrow(de_genes) > 0) {
-    top_genes <- head(de_genes[order(abs(de_genes$avg_log2FC), decreasing = TRUE), ], 100)
+    top_genes <- utils::head(de_genes[order(abs(de_genes$avg_log2FC), decreasing = TRUE), ], 100)
     strength <- mean(abs(top_genes$avg_log2FC))
   } else {
     strength <- 0

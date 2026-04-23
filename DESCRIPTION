@@ -10,7 +10,7 @@ Description: Interactive tool for selecting tumor regions in spatial transcripto
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.2
 Imports:
     shiny,
     plotly,
@@ -19,9 +19,19 @@ Imports:
     ggplot2,
     Seurat,
     tidyr,
-    magrittr
+    magrittr,
+    dbscan,
+    concaveman,
+    cowplot
 Suggests:
     testthat,
+    patchwork,
+    scales,
+    FNN,
+    ggrepel,
+    Matrix,
+    spatstat.geom,
+    spatstat.explore,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

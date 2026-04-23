@@ -72,7 +72,9 @@ add_polygon_membership <- function(seurat_obj, polygons, fov_name = "fov") {
 #' @export
 #' 
 #' @examples
-#' seurat_obj <- detect_cancer_regions(seurat_obj, eps = 50, minPts = 30)
+#' \dontrun{
+#' seurat_obj <- add_dbscan_polygons(seurat_obj, eps = 50, minPts = 30)
+#' }
 #'
 add_dbscan_polygons <- function(seurat_obj,
                                    fov_name = "fov",
@@ -301,4 +303,111 @@ plot_dbscan_polygons <- function(seurat_obj,
   
   # Return the polygons
   return(auto_polygons)
+}
+
+#' Load Xenium Seurat Object with Stable Cell IDs
+#'
+#' Reads a Seurat object from RDS, enforces unique cell IDs, optionally computes
+#' cancer and ROI metadata columns, and stores coordinate mapping helpers.
+#'
+#' @param rds_path Path to serialized Seurat object (.rds)
+#' @param image Optional image/FOV name to use for coordinates
+#' @param celltype_col Metadata column containing cell type annotations
+#' @param cancer_labels Optional character vector of labels to mark as cancer
+#' @param roi_cells Optional character vector of cell IDs to mark as inside ROI
+#' @param roi_col Metadata column name for ROI membership
+#' @param store_coords Logical; store processed coordinate data in misc
+#' @param coords_name Name used for stored coordinate data in misc
+#' @return Seurat object with standardized metadata and optional stored coordinates
+#' @export
+load_xenium_seurat <- function(
+    rds_path,
+    image = NULL,
+    celltype_col = "singleR.predicted.id.brcaAtlas",
+    cancer_labels = NULL,
+    roi_cells = NULL,
+    roi_col = "inside_polygon",
+    store_coords = TRUE,
+    coords_name = "tissue_coords"
+) {
+  stopifnot(file.exists(rds_path))
+  obj <- readRDS(rds_path)
+
+  if (is.null(colnames(obj)) || length(colnames(obj)) == 0) {
+    stop("Seurat object has no colnames (cell IDs). Cannot proceed.")
+  }
+  if (anyDuplicated(colnames(obj)) > 0) {
+    original <- colnames(obj)
+    colnames(obj) <- make.unique(original)
+    obj$cell_id_original <- original
+  }
+
+  obj$cell_id <- colnames(obj)
+
+  if (!is.null(cancer_labels)) {
+    if (celltype_col %in% colnames(obj@meta.data)) {
+      obj$is_cancer <- obj[[celltype_col, drop = TRUE]] %in% cancer_labels
+    } else {
+      warning(
+        "cancer_labels provided, but celltype_col='", celltype_col,
+        "' not found in meta.data. Skipping is_cancer."
+      )
+    }
+  }
+
+  if (!is.null(roi_cells)) {
+    roi_cells <- intersect(roi_cells, colnames(obj))
+    obj[[roi_col]] <- colnames(obj) %in% roi_cells
+  }
+
+  imgs <- names(obj@images)
+  if (length(imgs) > 0) {
+    if (is.null(image)) {
+      image <- imgs[1]
+    } else if (!image %in% imgs) {
+      stop("Requested image not found. Available images: ", paste(imgs, collapse = ", "))
+    }
+
+    coords <- Seurat::GetTissueCoordinates(obj, image = image)
+    df <- as.data.frame(coords)
+
+    rn <- rownames(coords)
+    idx <- suppressWarnings(as.integer(rn))
+
+    if (!all(is.na(idx)) && all(!is.na(idx))) {
+      if (max(idx) <= ncol(obj) && min(idx) >= 1) {
+        df$cell_id <- colnames(obj)[idx]
+      } else {
+        df$cell_id <- NA_character_
+        warning(
+          "Coordinate rownames look numeric but exceed cell count (or are out of range). ",
+          "Could not map coords -> cell_id by index. Inspect GetTissueCoordinates output."
+        )
+      }
+    } else {
+      df$cell_id <- rn
+    }
+
+    if (any(!is.na(df$cell_id))) {
+      if (roi_col %in% colnames(obj@meta.data)) {
+        df[[roi_col]] <- obj[[roi_col, drop = TRUE]][df$cell_id]
+      }
+      if ("is_cancer" %in% colnames(obj@meta.data)) {
+        df$is_cancer <- obj$is_cancer[df$cell_id]
+      }
+      if (celltype_col %in% colnames(obj@meta.data)) {
+        df[[celltype_col]] <- obj[[celltype_col, drop = TRUE]][df$cell_id]
+      }
+    }
+
+    obj@misc$xenium_image_name <- image
+    obj@misc$coords_index_to_cell_id <- stats::setNames(df$cell_id, rownames(coords))
+    if (store_coords) {
+      obj@misc[[coords_name]] <- df
+    }
+  } else {
+    warning("No images/FOV found in obj@images; skipping coordinate extraction.")
+  }
+
+  return(obj)
 }
