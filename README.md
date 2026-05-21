@@ -1,6 +1,6 @@
 # stGradient: R toolkit for distance-based analyses of spatial transcriptomics data 
 
-<img align="right" width="305" height="352" src="https://github.com/user-attachments/assets/837ce650-5865-48c7-83c1-7667e77fea27" />
+<img align="right" width="305" height="352" src="man/stGradientLogo.png" />
 
 
 **Interactive spatial analysis of tumor boundaries in spatial transcriptomics data**
