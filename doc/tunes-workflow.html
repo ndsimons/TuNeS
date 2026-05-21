@@ -11,7 +11,7 @@
 
 
 
-<title>TuNeS End-to-End Workflow</title>
+<title>stGradient End-to-End Workflow</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -366,12 +366,12 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">TuNeS End-to-End Workflow</h1>
+<h1 class="title toc-ignore">stGradient End-to-End Workflow</h1>
 
 </div>
 
 
-<p>This vignette demonstrates how to run the main TuNeS workflows on the
+<p>This vignette demonstrates how to run the main stGradient workflows on the
 included demo Seurat object. Use the tabs below to navigate between
 sections.</p>
 <div id="sections" class="section level1 tabset tabset-pills">
@@ -379,13 +379,13 @@ sections.</p>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>Load packages and the demo Seurat object.</p>
-<pre class="r"><code>library(TuNeS)
+<pre class="r"><code>library(stGradient)
 library(Seurat)
 library(dplyr)
 library(ggplot2)
 
 # Locate demo data both when developing and when installed.
-demo_path &lt;- system.file(&quot;demoData&quot;, &quot;ps20_27981.rds&quot;, package = &quot;TuNeS&quot;)
+demo_path &lt;- system.file(&quot;demoData&quot;, &quot;ps20_27981.rds&quot;, package = &quot;stGradient&quot;)
 if (demo_path == &quot;&quot;) demo_path &lt;- file.path(&quot;demoData&quot;, &quot;ps20_27981.rds&quot;)
 if (!file.exists(demo_path)) demo_path &lt;- file.path(&quot;..&quot;, &quot;demoData&quot;, &quot;ps20_27981.rds&quot;)
 stopifnot(file.exists(demo_path))
@@ -713,7 +713,7 @@ head(lr_intra)
 <p>Launch the Shiny app for interactive polygon drawing on your own
 data.</p>
 <pre class="r"><code># Interactive polygon drawing app (manual usage)
-launch_tunes()</code></pre>
+launch_stGradient()</code></pre>
 </div>
 </div>
 

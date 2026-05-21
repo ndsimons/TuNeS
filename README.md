@@ -1,10 +1,10 @@
-# TuNeS: Tumor Nest Selector
+# stGradient: Tumor Nest Selector
 
 <img align="right" src="https://github.com/user-attachments/assets/ab584c5a-2067-4506-971a-fc3f21d719f8" width="305" height="352">
 
 **Interactive spatial analysis of tumor boundaries in spatial transcriptomics data**
 
-TuNeS provides tools to interactively select tumor regions and analyze genomic separation at varying distances from tumor boundaries. This package is designed for spatial transcriptomics analysis, particularly for understanding tumor microenvironment architecture.
+stGradient provides tools to interactively select tumor regions and analyze genomic separation at varying distances from tumor boundaries. This package is designed for spatial transcriptomics analysis, particularly for understanding tumor microenvironment architecture.
 
 Features
 
@@ -21,12 +21,12 @@ Features
 install.packages("devtools")
 
 # from GitHub
-devtools::install_github("ndsimons/TuNeS")
+devtools::install_github("ndsimons/stGradient")
 ```
 
 ## Dependencies
 
-TuNeS requires the following packages:
+stGradient requires the following packages:
 - shiny
 - plotly
 - sf
@@ -51,10 +51,10 @@ If using shiny app to select polygons:
 ### Launch Interactive Polygon Selector
 
 ```r
-library(TuNeS)
+library(stGradient)
 
 # Launch Shiny app
-launch_tunes()
+launch_stGradient()
 
 # In the app:
 # 1. Enter your Seurat object name
@@ -103,7 +103,7 @@ seurat_obj$boundary_distance <- calculate_boundary_distances(seurat_obj, auto_po
 ### Load Xenium Seurat Object with Stable Cell IDs
 
 ```r
-library(TuNeS)
+library(stGradient)
 
 seurat_obj <- load_xenium_seurat(
   rds_path = "path/to/sample_seuratObject.rds",
@@ -161,7 +161,7 @@ plot_roi_inout_celltype_dodge(
 
 ## Pair Correlation Function (PCF) Outside Tumor Polygons
 
-TuNeS includes optimized helpers for `spatstat`-based PCF analysis using only cells
+stGradient includes optimized helpers for `spatstat`-based PCF analysis using only cells
 outside tumor polygons.
 
 ### Calculate Outside-Polygon PCF Summary at a Target Distance
@@ -359,12 +359,12 @@ cat("Plateau begins at:", critical_dist$plateau_distance, "μm\n")
 ## Complete Workflow Example
 
 ```r
-library(TuNeS)
+library(stGradient)
 library(Seurat)
 
 # Skip step 1 and proceed to step 2 if using DBscan for polygons
 # Step 1: Select regions interactively
-launch_tunes()
+launch_stGradient()
 seurat_obj <- add_polygon_membership(seurat_obj, drawn_polygons)
 
 # Step 2: Generate polygons automatically (optional alternative to interactive)
@@ -404,7 +404,7 @@ plot_celltype_heatmap(results_all$celltype_contributions)
 ## Main Functions
 
 ### Interactive Selection
-- `launch_tunes()` - Launch Shiny app for polygon drawing
+- `launch_stGradient()` - Launch Shiny app for polygon drawing
 
 ### Data Processing
 - `load_xenium_seurat()` - Load Xenium Seurat RDS and create stable cell mapping
@@ -449,7 +449,7 @@ plot_celltype_heatmap(results_all$celltype_contributions)
 
 ## Understanding Inside Modes
 
-TuNeS supports two modes for defining "inside" cells:
+stGradient supports two modes for defining "inside" cells:
 
 ### Mode: "all" (default)
 - **Inside**: All cells inside polygon (entire tumor core)
@@ -506,8 +506,8 @@ MIT License - see LICENSE file for details
 ## Contact
 
 For questions, issues, or contributions:
-- GitHub Issues: https://github.com/ndsimons/TuNeS/issues
+- GitHub Issues: https://github.com/ndsimons/stGradient/issues
 - Email: noah.simons@providence.org
 
 
-TuNeS was developed for analyzing tumor microenvironment architecture in spatial transcriptomics data, with a focus on understanding immune-tumor boundaries and cell type spatial distributions.
+stGradient was developed for analyzing tumor microenvironment architecture in spatial transcriptomics data, with a focus on understanding immune-tumor boundaries and cell type spatial distributions.
