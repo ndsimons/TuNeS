@@ -9,13 +9,13 @@ knitr::opts_chunk$set(
 )
 
 ## ----load---------------------------------------------------------------------
-library(TuNeS)
+library(stGradient)
 library(Seurat)
 library(dplyr)
 library(ggplot2)
 
 # Locate demo data both when developing and when installed.
-demo_path <- system.file("demoData", "ps20_27981.rds", package = "TuNeS")
+demo_path <- system.file("demoData", "ps20_27981.rds", package = "stGradient")
 if (demo_path == "") demo_path <- file.path("demoData", "ps20_27981.rds")
 if (!file.exists(demo_path)) demo_path <- file.path("..", "demoData", "ps20_27981.rds")
 stopifnot(file.exists(demo_path))
@@ -264,5 +264,5 @@ plot_niche_coefficients(lr_intra, title = "Intratumoral pseudo-cohort")
 
 ## ----shiny-app, eval=FALSE----------------------------------------------------
 #  # Interactive polygon drawing app (manual usage)
-#  launch_tunes()
+#  launch_stGradient()
 

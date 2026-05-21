@@ -1,12 +1,12 @@
 ---
-title: "TuNeS End-to-End Workflow"
+title: "stGradient End-to-End Workflow"
 output:
   rmarkdown::html_document:
     theme: flatly
     toc: false
     self_contained: true
 vignette: >
-  %\VignetteIndexEntry{TuNeS End-to-End Workflow}
+  %\VignetteIndexEntry{stGradient End-to-End Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette demonstrates how to run the main TuNeS workflows on the included demo Seurat object. Use the tabs below to navigate between sections.
+This vignette demonstrates how to run the main stGradient workflows on the included demo Seurat object. Use the tabs below to navigate between sections.
 
 # Sections {.tabset .tabset-pills}
 
@@ -31,13 +31,13 @@ This vignette demonstrates how to run the main TuNeS workflows on the included d
 Load packages and the demo Seurat object.
 
 ```{r load}
-library(TuNeS)
+library(stGradient)
 library(Seurat)
 library(dplyr)
 library(ggplot2)
 
 # Locate demo data both when developing and when installed.
-demo_path <- system.file("demoData", "ps20_27981.rds", package = "TuNeS")
+demo_path <- system.file("demoData", "ps20_27981.rds", package = "stGradient")
 if (demo_path == "") demo_path <- file.path("demoData", "ps20_27981.rds")
 if (!file.exists(demo_path)) demo_path <- file.path("..", "demoData", "ps20_27981.rds")
 stopifnot(file.exists(demo_path))
@@ -342,5 +342,5 @@ Launch the Shiny app for interactive polygon drawing on your own data.
 
 ```{r shiny-app, eval=FALSE}
 # Interactive polygon drawing app (manual usage)
-launch_tunes()
+launch_stGradient()
 ```

@@ -1,4 +1,4 @@
-#' Launch TuNeS Interactive Polygon Selector
+#' Launch stGradient Interactive Polygon Selector
 #'
 #' Opens a Shiny app for interactively drawing polygons on spatial data
 #'
@@ -6,12 +6,12 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' launch_tunes()
+#' launch_stGradient()
 #' }
-launch_tunes <- function() {
+launch_stGradient <- function() {
   
   ui <- shiny::fluidPage(
-    shiny::titlePanel("TuNeS: Tumor Nest Selector"),
+    shiny::titlePanel("stGradient: Tumor Nest Selector"),
     
     shiny::fluidRow(
       shiny::column(12, 
