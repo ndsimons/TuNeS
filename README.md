@@ -1,4 +1,4 @@
-# stGradient: Tumor Nest Selector
+# stGradient: R toolkit for distance-based analyses of spatial transcriptomics data 
 
 <img align="right" src="https://github.com/user-attachments/assets/ab584c5a-2067-4506-971a-fc3f21d719f8" width="305" height="352">
 
