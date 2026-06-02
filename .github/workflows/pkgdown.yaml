@@ -3,7 +3,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
   release:
     types: [published]
@@ -44,5 +44,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
           clean: false
-          branch: gh-pages
+          branch: main
           folder: docs
