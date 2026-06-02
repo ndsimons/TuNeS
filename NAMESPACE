@@ -2,6 +2,7 @@
 
 export(add_dbscan_polygons)
 export(add_polygon_membership)
+export(optimize_dbscan_params)
 export(calculate_boundary_distances)
 export(calculate_composition_difference)
 export(calculate_de_strength)
