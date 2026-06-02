@@ -1,0 +1,44 @@
+---
+title: "Loading & Setup"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading & Setup}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+## Introduction
+
+This vignette covers the initial steps for working with stGradient: loading spatial transcriptomics data and launching the interactive polygon selector.
+
+## Loading Xenium Data
+
+The `load_xenium_seurat()` function provides a standardized way to load 10x Xenium Seurat objects with stable cell IDs and cancer/non-cancer annotations.
+   
+```{r load-data}
+library(stGradient)
+
+seurat_obj <- load_xenium_seurat(
+  rds_path = "path/to/sample_seuratObject.rds",
+  celltype_col = "singleR.predicted.id.brcaAtlas",
+  cancer_labels = c("Cancer LumA SC", "Cancer LumB SC", "Cancer Her2 SC")
+)
+```
+
+This function:
+
+1. Reads a Seurat `.rds` file
+2. Creates a stable cell-to-barcode mapping
+3. Adds an `is_cancer` metadata column based on the cell type labels you supply
+
+## Next Steps
+
+Once you have your Seurat object loaded, proceed to the [Region Selection](region-selection.html) vignette to select ROI polygons and membership assignment.

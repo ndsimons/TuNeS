@@ -1,0 +1,123 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: pulse
+  package: stGradient
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    articles:
+      text: Vignettes
+      menu:
+        - text: Getting Started
+        - text: stGradient Workflow
+          href: articles/stGradient-workflow.html
+        - text: Loading & Setup
+          href: articles/loading-and-setup.html
+        - text: "---"
+        - text: Analysis
+        - text: Region Selection
+          href: articles/region-selection.html
+        - text: Distance Metrics
+          href: articles/distance-metrics.html
+        - text: PCF Analysis
+          href: articles/pcf-analysis.html
+        - text: Gene-Distance Analysis
+          href: articles/gene-distance-analysis.html
+        - text: Niche Analysis
+          href: articles/niche-analysis.html
+        - text: "---"
+        - text: Plotting
+        - text: Visualization
+          href: articles/visualization.html
+
+articles:
+  - title: Getting Started
+    navbar: ~
+    contents:
+      - stGradient-workflow
+      - loading-and-setup
+  - title: Analysis
+    contents:
+      - region-selection
+      - distance-metrics
+      - pcf-analysis
+      - gene-distance-analysis
+      - niche-analysis
+  - title: Visualization
+    contents:
+      - visualization
+
+reference:
+  - title: Loading & Setup
+    desc: Load data and launch the interactive selector
+    contents:
+      - load_xenium_seurat
+      - launch_stGradient
+
+  - title: Region Selection
+    desc: Define tumor regions via DBSCAN or interactive polygons
+    contents:
+      - add_dbscan_polygons
+      - optimize_dbscan_params
+      - add_polygon_membership
+      - plot_dbscan_polygons
+
+  - title: Distance Metrics
+    desc: Boundary distances and separation metrics
+    contents:
+      - calculate_boundary_distances
+      - calculate_distance_profile
+      - calculate_transcriptomic_distance
+      - calculate_composition_difference
+      - calculate_de_strength
+      - find_critical_distance
+      - compute_distance_from_boundary
+
+  - title: PCF Analysis
+    desc: Pair correlation functions outside tumor polygons
+    contents:
+      - build_outside_ppp
+      - calculate_pcf_outside_summary
+      - plot_pcf_outside_heatmap
+      - plot_pcf_outside_pair_envelopes
+      - plot_pcf_pair_gg
+
+  - title: Gene-Distance Analysis
+    desc: Model gene expression as a function of spatial distance
+    contents:
+      - find_distance_associated_genes
+      - find_hotspot_distance_genes
+      - define_tcell_hotspots
+      - plot_distance_genes
+      - plot_tcell_hotspots
+
+  - title: Niche Analysis
+    desc: Intratumoral vs peritumoral niche identification and testing
+    contents:
+      - run_niche_pipeline
+      - run_niche_stat_tests
+      - run_niche_univariate_lr
+      - plot_niche_stacked_composition
+      - plot_niche_grouped_bars
+      - plot_niche_coefficients
+
+  - title: Visualization
+    desc: QC plots, ROI composition, and distance profile visualization
+    contents:
+      - qc_plot_xenium
+      - plot_roi_celltype_dist
+      - plot_roi_inout_celltype_stack
+      - plot_roi_inout_celltype_dodge
+      - plot_distance_comparison
+      - plot_all_metrics
+      - plot_celltype_heatmap
+      - plot_celltype_proportions
+
+  - title: Utilities
+    desc: Internal helpers
+    contents:
+      - parse_svg_path

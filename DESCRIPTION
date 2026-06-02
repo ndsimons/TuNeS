@@ -1,7 +1,7 @@
 Package: stGradient
 Title: Tumor Nest Selector - Spatial Analysis of Tumor Boundaries
 Version: 0.1.0
-Authors@R: person("stGradient", "Developer", email = "noah.simons@providence.org", role = c("aut", "cre"))
+Authors@R: person("Noah D. Simons", email = "noah.simons@providence.org", role = c("aut", "cre"))
 Description: Interactive tool for selecting tumor regions in spatial transcriptomics data
     and analyzing genomic separation at varying distances from tumor boundaries. Provides
     a Shiny interface for drawing polygons and functions for calculating distance-based
@@ -28,6 +28,7 @@ Suggests:
     patchwork,
     scales,
     FNN,
+    cluster,
     ggrepel,
     Matrix,
     spatstat.geom,

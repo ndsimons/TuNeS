@@ -158,6 +158,122 @@ add_dbscan_polygons <- function(seurat_obj,
   return(seurat_obj)
 }
 
+#' Optimize DBSCAN Parameters via Silhouette Score
+#'
+#' Performs a grid search over eps and minPts parameter combinations for DBSCAN
+#' clustering of cancer cell coordinates, evaluating each combination using the
+#' average silhouette score. Returns a data frame of results ranked by silhouette
+#' score to help select optimal parameters for `add_dbscan_polygons()`.
+#'
+#' @param seurat_obj Seurat object with spatial coordinates
+#' @param fov_name Name of the field of view (default: "fov")
+#' @param cancer_col Metadata column indicating cancer cells (default: "is_cancer")
+#' @param eps_range Numeric vector of eps values to test (default: seq(10, 100, by = 5))
+#' @param minPts_range Numeric vector of minPts values to test (default: c(10, 15, 20, 30, 50))
+#' @param max_sample Maximum number of non-noise points to sample for silhouette
+#'   calculation to control memory usage (default: 46000)
+#' @param verbose Print progress messages (default: TRUE)
+#'
+#' @return A data frame with columns: eps, minPts, sil_score, n_clusters, noise_pct,
+#'   sorted by descending silhouette score. The best combination is in the first row.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Run parameter optimization
+#' results <- optimize_dbscan_params(seurat_obj)
+#'
+#' # View best parameters
+#' head(results)
+#'
+#' # Use best parameters
+#' best <- results[1, ]
+#' seurat_obj <- add_dbscan_polygons(seurat_obj, eps = best$eps, minPts = best$minPts)
+#' }
+#'
+optimize_dbscan_params <- function(seurat_obj,
+                                   fov_name = "fov",
+                                   cancer_col = "is_cancer",
+                                   eps_range = seq(10, 100, by = 5),
+                                   minPts_range = c(10, 15, 20, 30, 50),
+                                   max_sample = 46000,
+                                   verbose = TRUE) {
+
+  if (!requireNamespace("cluster", quietly = TRUE)) {
+    stop("Package 'cluster' is required. Install with: install.packages('cluster')")
+  }
+  if (!requireNamespace("dbscan", quietly = TRUE)) {
+    stop("Package 'dbscan' is required. Install with: install.packages('dbscan')")
+  }
+
+ # Get tissue coordinates
+  coords <- Seurat::GetTissueCoordinates(seurat_obj, image = fov_name)
+
+  if (!cancer_col %in% colnames(seurat_obj@meta.data)) {
+    stop(paste0("Column '", cancer_col, "' not found in metadata"))
+  }
+
+  coords$is_cancer <- seurat_obj@meta.data[[cancer_col]]
+  cancer_coords <- coords %>% dplyr::filter(is_cancer == TRUE)
+
+  if (nrow(cancer_coords) == 0) {
+    stop("No cancer cells found in metadata")
+  }
+
+  xy <- cancer_coords[, c("x", "y")]
+
+  # Build parameter grid
+
+  results <- expand.grid(eps = eps_range, minPts = minPts_range)
+  results$sil_score <- NA_real_
+  results$n_clusters <- NA_integer_
+  results$noise_pct <- NA_real_
+
+  n_combos <- nrow(results)
+  if (verbose) message(sprintf("Testing %d parameter combinations...", n_combos))
+
+  for (i in seq_len(n_combos)) {
+    if (verbose) {
+      message(sprintf("  %d/%d  eps=%.0f  minPts=%d",
+                      i, n_combos, results$eps[i], results$minPts[i]))
+    }
+
+    cl <- dbscan::dbscan(xy, eps = results$eps[i], minPts = results$minPts[i])
+    results$n_clusters[i] <- max(cl$cluster)
+    results$noise_pct[i] <- mean(cl$cluster == 0)
+
+    # Need at least 2 clusters and more points than clusters for silhouette
+    if (max(cl$cluster) >= 2 && sum(cl$cluster > 0) > max(cl$cluster)) {
+      non_noise <- which(cl$cluster > 0)
+
+      # Subsample to limit memory for distance matrix
+      if (length(non_noise) > max_sample) {
+        non_noise <- sample(non_noise, max_sample)
+      }
+
+      sil <- cluster::silhouette(cl$cluster[non_noise], stats::dist(xy[non_noise, ]))
+      results$sil_score[i] <- mean(sil[, 3])
+    }
+  }
+
+  # Sort by silhouette score descending
+  results <- results[order(-results$sil_score, na.last = TRUE), ]
+  rownames(results) <- NULL
+
+  if (verbose) {
+    best <- results[1, ]
+    if (!is.na(best$sil_score)) {
+      message(sprintf("Best: eps=%.0f, minPts=%d (silhouette=%.3f, %d clusters, %.1f%% noise)",
+                      best$eps, best$minPts, best$sil_score, best$n_clusters,
+                      best$noise_pct * 100))
+    } else {
+      message("No valid silhouette scores found. Try adjusting parameter ranges.")
+    }
+  }
+
+  return(results)
+}
+
 #' Plot DBSCAN-based cancer region polygons
 #'
 #' Uses DBSCAN clustering on cancer cell coordinates to identify spatial regions,
