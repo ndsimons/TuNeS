@@ -4,6 +4,10 @@
 
 - **Noah D. Simons**. Author, maintainer.
 
+- **Anton Kravchenko**. Contributor.
+
+- **Alexa Dowdell**. Contributor.
+
 ## Citation
 
 Noah D. Simons (2026). *stGradient: stGradient - Spatial Analysis of
