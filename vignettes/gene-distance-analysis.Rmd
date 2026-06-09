@@ -135,5 +135,4 @@ Genes with significant positive slopes increase in expression away from the boun
 
 ## Next Steps
 
-- [Niche Analysis](niche-analysis.html) — intratumoral vs peritumoral niche identification and statistical testing
 - [Visualization](visualization.html) — comprehensive plotting functions

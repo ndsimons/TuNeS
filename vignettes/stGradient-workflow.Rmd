@@ -94,4 +94,3 @@ Once the basic distance profile is computed, you can extend into:
 
 - **PCF Analysis** — characterize cell-type spatial co-occurrence outside the tumor ([PCF Analysis](pcf-analysis.html))
 - **Gene-Distance Modeling** — identify genes whose expression varies with boundary distance ([Gene-Distance Analysis](gene-distance-analysis.html))
-- **Niche Analysis** — compare spatial neighborhood composition between clinical groups ([Niche Analysis](niche-analysis.html))
