@@ -27,8 +27,6 @@ navbar:
           href: articles/pcf-analysis.html
         - text: Gene-Distance Analysis
           href: articles/gene-distance-analysis.html
-        - text: Niche Analysis
-          href: articles/niche-analysis.html
         - text: "---"
         - text: Plotting
         - text: Visualization
@@ -46,7 +44,6 @@ articles:
       - distance-metrics
       - pcf-analysis
       - gene-distance-analysis
-      - niche-analysis
   - title: Visualization
     contents:
       - visualization

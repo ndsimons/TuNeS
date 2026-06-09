@@ -26,7 +26,6 @@ Additional documentation organized by topic:
 | [Distance Metrics](articles/distance-metrics.html) | Boundary distances, transcriptomic distance, composition, DE strength |
 | [PCF Analysis](articles/pcf-analysis.html) | Pair correlation functions outside tumor polygons |
 | [Gene-Distance Analysis](articles/gene-distance-analysis.html) | Model gene expression as a function of distance from boundaries |
-| [Niche Analysis](articles/niche-analysis.html) | Intratumoral vs peritumoral niche identification and testing |
 | [Visualization](articles/visualization.html) | QC plots, ROI composition, distance profile plots |
 
 ## Quick Start
