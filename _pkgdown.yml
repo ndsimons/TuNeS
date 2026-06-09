@@ -95,16 +95,6 @@ reference:
       - plot_distance_genes
       - plot_tcell_hotspots
 
-  - title: Niche Analysis
-    desc: Intratumoral vs peritumoral niche identification and testing
-    contents:
-      - run_niche_pipeline
-      - run_niche_stat_tests
-      - run_niche_univariate_lr
-      - plot_niche_stacked_composition
-      - plot_niche_grouped_bars
-      - plot_niche_coefficients
-
   - title: Visualization
     desc: QC plots, ROI composition, and distance profile visualization
     contents:
