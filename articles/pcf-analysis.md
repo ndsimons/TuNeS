@@ -117,5 +117,3 @@ plot_pcf_pair_gg(env_list[["TypeA_vs_TypeB"]])
 
 - [Gene-Distance Analysis](gene-distance-analysis.md) — model gene
   expression as a function of boundary distance
-- [Niche Analysis](niche-analysis.md) — intratumoral vs peritumoral
-  niche identification

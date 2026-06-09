@@ -138,6 +138,4 @@ landmark.
 
 ## Next Steps
 
-- [Niche Analysis](niche-analysis.md) — intratumoral vs peritumoral
-  niche identification and statistical testing
 - [Visualization](visualization.md) — comprehensive plotting functions

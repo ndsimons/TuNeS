@@ -91,5 +91,3 @@ Once the basic distance profile is computed, you can extend into:
 - **Gene-Distance Modeling** — identify genes whose expression varies
   with boundary distance ([Gene-Distance
   Analysis](gene-distance-analysis.md))
-- **Niche Analysis** — compare spatial neighborhood composition between
-  clinical groups ([Niche Analysis](niche-analysis.md))

@@ -11,7 +11,6 @@
 - [Distance Metrics](distance-metrics.md):
 - [PCF Analysis](pcf-analysis.md):
 - [Gene-Distance Analysis](gene-distance-analysis.md):
-- [Niche Analysis](niche-analysis.md):
 
 ### Visualization
 
