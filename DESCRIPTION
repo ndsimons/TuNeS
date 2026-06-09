@@ -1,7 +1,11 @@
 Package: stGradient
 Title: stGradient - Spatial Analysis of Tumor Boundaries
 Version: 0.1.0
-Authors@R: person("Noah D. Simons", email = "noah.simons@providence.org", role = c("aut", "cre"))
+Authors@R: c(
+    person("Noah D. Simons", email = "noah.simons@providence.org", role = c("aut", "cre")),
+    person("Anton Kravchenko", role = "cre"),
+    person("Alexa Dowdell", role = "aut")
+    )
 Description: Interactive tool for selecting tumor regions in spatial transcriptomics data
     and analyzing genomic separation at varying distances from tumor boundaries. Provides
     a Shiny interface for drawing polygons and functions for calculating distance-based

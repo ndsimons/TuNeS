@@ -3,7 +3,9 @@ template:
   bootstrap: 5
   bootswatch: pulse
   package: stGradient
-
+authors:
+  sidebar:
+    roles: [aut, ctb, cre]
 navbar:
   structure:
     left: [intro, reference, articles]
