@@ -1,5 +1,5 @@
 Package: stGradient
-Title: Tumor Nest Selector - Spatial Analysis of Tumor Boundaries
+Title: stGradient - Spatial Analysis of Tumor Boundaries
 Version: 0.1.0
 Authors@R: person("Noah D. Simons", email = "noah.simons@providence.org", role = c("aut", "cre"))
 Description: Interactive tool for selecting tumor regions in spatial transcriptomics data
