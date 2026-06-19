@@ -149,43 +149,37 @@ plot_celltype_heatmap <- function(celltype_contributions) {
 #' @return ggplot object
 #' @importFrom magrittr %>%
 #' @export
-plot_celltype_proportions <- function(celltype_contributions, top_n = 5) {
-  # Find peak distance
-  total_by_distance <- celltype_contributions %>%
-    dplyr::group_by(distance) %>%
-    dplyr::summarise(total_contrib = sum(contribution), .groups = "drop")
-  
+plot_celltype_proportions <- function (celltype_contributions, top_n = 5) 
+{
+  total_by_distance <- celltype_contributions %>% dplyr::group_by(distance) %>% 
+    dplyr::summarise(total_contrib = sum(contribution), 
+                     .groups = "drop")
   peak_distance <- total_by_distance$distance[which.max(total_by_distance$total_contrib)]
-  
-  # Get top cell types at peak
-  top_celltypes <- celltype_contributions %>%
-    dplyr::filter(distance == peak_distance) %>%
-    dplyr::arrange(dplyr::desc(contribution)) %>%
-    dplyr::slice(1:top_n) %>%
-    dplyr::pull(celltype)
-  
-  # Prepare data
-  celltype_props_long <- celltype_contributions %>%
-    dplyr::filter(celltype %in% top_celltypes) %>%
-    tidyr::pivot_longer(cols = c(inside_prop, outside_prop),
-                        names_to = "region",
-                        values_to = "proportion") %>%
-    dplyr::mutate(region = ifelse(region == "inside_prop", "Inside", "Outside"))
-  
-  ggplot2::ggplot(celltype_props_long, 
-                  ggplot2::aes(x = distance, y = proportion, color = region, linetype = region)) +
-    ggplot2::geom_line(linewidth = 1) +
-    ggplot2::facet_wrap(~celltype, scales = "free_y") +
-    ggplot2::scale_color_manual(values = c("Inside" = "red", "Outside" = "blue")) +
+  top_celltypes <- celltype_contributions %>% dplyr::filter(distance == 
+                                                              peak_distance) %>% dplyr::arrange(dplyr::desc(contribution)) %>% 
+    dplyr::slice(1:top_n) %>% dplyr::pull(celltype)
+  celltype_props_long <- celltype_contributions %>% dplyr::filter(celltype %in% 
+                                                                    top_celltypes) %>% tidyr::pivot_longer(cols = c(inside_prop, 
+                                                                                                                    outside_prop), names_to = "region", values_to = "proportion") %>% 
+    dplyr::mutate(region = ifelse(region == "inside_prop", 
+                                  "Inside", "Outside"),
+                  signed_distance = ifelse(region == "Inside", -distance, distance))
+  max_dist <- max(abs(celltype_props_long$signed_distance))
+  ggplot2::ggplot(celltype_props_long, ggplot2::aes(x = signed_distance, 
+                                                    y = proportion, color = region, linetype = region)) + 
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed", color = "grey40") +
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::facet_wrap(~celltype, scales = "free_y") + 
+    ggplot2::scale_color_manual(values = c(Inside = "red", Outside = "blue")) + 
+    ggplot2::scale_x_continuous(limits = c(-max_dist, max_dist)) +
     ggplot2::labs(
-      title = "Cell Type Proportions: Inside vs Outside",
-      subtitle = paste("Top", top_n, "most different cell types"),
-      x = "Distance from boundary (μm)",
-      y = "Proportion",
-      color = "Region",
-      linetype = "Region"
-    ) +
-    ggplot2::theme_minimal()
+      title = "Cell Type Proportions: Inside vs Outside", 
+      subtitle = paste("Top", top_n, "most different cell types"), 
+      x = "Distance from boundary (\u03bcm)\n\u2190 inside tumor | outside tumor \u2192",
+      y = "Proportion", 
+      color = "Region", linetype = "Region") + 
+    ggplot2::theme_minimal() +
+    ggplot2::theme(axis.title.x = ggplot2::element_text(lineheight = 1.3))
 }
 
 #' QC Visualization for Xenium Spatial Data
